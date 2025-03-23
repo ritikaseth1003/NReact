@@ -1,61 +1,44 @@
-import { LOGO_URL } from "../utils/constants";
-import { useState, useContext } from "react";
+import { LOGO_URL } from "../utils/constants.js";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import useOnlineStatus from "../utils/useOnlineStatus";
-import UserContext from "../utils/UserContext";
-import { useSelector } from "react-redux";
+import React from 'react';
 
 const Header = () => {
-  const [btnNameReact, setBtnNameReact] = useState("Login");
+    console.log("Header rendered");
+    const [btnNameReact, setBtnNameReact] = useState("Login");
+    
+    // Get online status from the custom hook
+    const onlineStatus = useOnlineStatus();
+    
+    useEffect(() => {
+        // callback function.
+        console.log("useEffect called!!")
+    }, []);
+    
+    return (
+        <div className="header">
+            <div className="logo-container">
+                <img className="logo" src={LOGO_URL} alt="QuickBite logo"></img>
+                <h1 className="name">QuickBite</h1>
+            </div>
 
-  const onlineStatus = useOnlineStatus();
-
-  const { loggedInUser } = useContext(UserContext);
-  //console.log(loggedInUser);
-
-  // Subscribing to the store using a Selector
-  const cartItems = useSelector((store) => store.cart.items);
-  //console.log(cartItems);
-
-  return (
-    <div className="flex justify-between bg-pink-100 shadow-lg sm:bg-yellow-50 lg:bg-green-50">
-      <div className="logo-container">
-        <img className="w-56" src={LOGO_URL} />
-      </div>
-      <div className="flex items-center">
-        <ul className="flex p-4 m-4">
-          <li className="px-4">Online Status: {onlineStatus ? "✅" : "🔴"}</li>
-          <li className="px-4">
-            <Link to="/">Home</Link>
-          </li>
-          <li className="px-4">
-            <Link to="/about">About Us</Link>
-          </li>
-          <li className="px-4">
-            <Link to="/contact">Contact Us</Link>
-          </li>
-          <li className="px-4">
-            <Link to="/grocery">Grocery</Link>
-          </li>
-          <li className="px-4 font-bold text-xl">
-            <Link to="/cart">Cart - ({cartItems.length} items)</Link>
-          </li>
-          <button
-            className="login"
-            onClick={() => {
-              btnNameReact === "Login"
-                ? setBtnNameReact("Logout")
-                : setBtnNameReact("Login");
-            }}
-          >
-            {btnNameReact}
-          </button>
-
-          <li className="px-4 ">{loggedInUser}</li>
-        </ul>
-      </div>
-    </div>
-  );
-};
+            <div className="nav-items">
+                <ul>
+                    <li>Online status: {onlineStatus ? "✅" : "🔴"}</li>
+                    <li><Link to="/">Home</Link></li>
+                    <li><Link to="/about">About Us</Link></li>
+                    <li><Link to="/contact">Contact Us</Link></li>
+                    <li><Link to="/grocery">Grocery</Link></li>
+                    <li>Cart</li>
+                    <button className="login" onClick={() => {
+                        setBtnNameReact(btnNameReact === "Login" ? "Logout" : "Login");
+                    }}>{btnNameReact}
+                    </button>
+                </ul>
+            </div>
+        </div>
+    )
+}
 
 export default Header;

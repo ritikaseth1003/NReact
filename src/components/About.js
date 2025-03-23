@@ -1,38 +1,26 @@
-import User from "./User";
-import UserClass from "./UserClass";
-import { Component } from "react";
-import UserContext from "../utils/UserContext";
-
-class About extends Component {
-  constructor(props) {
-    super(props);
-
-    //console.log("Parent Constructor");
-  }
-
-  componentDidMount() {
-    //console.log("Parent Component Did Mount");
-  }
-
-  render() {
-    //console.log("Parent Render");
-
-    return (
-      <div>
-        <h1>About Class Component</h1>
+import User from "./User.js";
+import UserClass from "./UserClass.js";
+import React from "react";
+class About extends React.Component{
+    //This class based component will also have its constructor method
+    constructor(props){
+        super(props);
+        console.log("parent constructor");
+    }
+    componentDidMount(){
+        // console.log("Parent componentDidMount.");
+    }
+    render(){
+        // console.log("parent render");
+      return(
         <div>
-          LoggedIn User
-          <UserContext.Consumer>
-            {({ loggedInUser }) => (
-              <h1 className="text-xl font-bold">{loggedInUser}</h1>
-            )}
-          </UserContext.Consumer>
-        </div>
-        <h2>This is Namaste React Web Series</h2>
-        <UserClass name={"First"} location={"Dehradun Class"} />
-      </div>
-    );
-  }
+            <h1>About CLASS Component.</h1>
+            <h2>This is Namaste React Web Series.</h2>
+            {/* <User name={"Akshay Saini(Functional component.)"}/> */}
+
+            <UserClass name={"FIRST(Class based component)"}location={"Dehradun class"}/>
+        </div>    )
+    }
 }
 
 export default About;
