@@ -18,151 +18,81 @@ const Contact = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Form submission logic would go here
     console.log('Form submitted:', formData);
     alert('Thank you for your message! We will get back to you soon.');
     setFormData({ name: '', email: '', subject: '', message: '' });
   };
 
   return (
-    <div className="contact-container">
-      {/* Header Section */}
-      <div className="contact-header">
-        <h1>Contact QuickBite</h1>
-        <div className="tagline">We'd love to hear from you</div>
+    <div className="container mx-auto p-6 text-gray-800">
+      <div className="text-center mb-8">
+        <h1 className="text-3xl font-bold text-orange-500">Contact QuickBite</h1>
+        <p className="text-lg text-gray-600">We'd love to hear from you</p>
       </div>
       
-      <div className="contact-content">
+      <div className="grid md:grid-cols-2 gap-10">
         {/* Contact Information */}
-        <div className="contact-info">
-          <div className="info-card">
-            <div className="info-icon">
-              <i className="fas fa-map-marker-alt"></i>
-            </div>
-            <h3>Our Location</h3>
-            <p>123 Food Street, Flavor Avenue</p>
-            <p>Foodie District, FC 12345</p>
+        <div className="space-y-6">
+          <div className="p-6 shadow-lg rounded-lg bg-white">
+            <h3 className="text-lg font-semibold">Our Location</h3>
+            <p>123 Food Street, Flavor Avenue, Foodie District, FC 12345</p>
           </div>
-          
-          <div className="info-card">
-            <div className="info-icon">
-              <i className="fas fa-phone-alt"></i>
-            </div>
-            <h3>Call Us</h3>
+          <div className="p-6 shadow-lg rounded-lg bg-white">
+            <h3 className="text-lg font-semibold">Call Us</h3>
             <p>Customer Support: +91 9876543210</p>
             <p>Restaurant Partners: +91 9876543211</p>
           </div>
-          
-          <div className="info-card">
-            <div className="info-icon">
-              <i className="fas fa-envelope"></i>
-            </div>
-            <h3>Email Us</h3>
+          <div className="p-6 shadow-lg rounded-lg bg-white">
+            <h3 className="text-lg font-semibold">Email Us</h3>
             <p>support@quickbite.com</p>
             <p>partners@quickbite.com</p>
           </div>
-          
-          <div className="info-card">
-            <div className="info-icon">
-              <i className="fas fa-clock"></i>
-            </div>
-            <h3>Business Hours</h3>
+          <div className="p-6 shadow-lg rounded-lg bg-white">
+            <h3 className="text-lg font-semibold">Business Hours</h3>
             <p>Monday - Sunday: 9:00 AM - 11:00 PM</p>
             <p>Customer Support: 24/7</p>
           </div>
         </div>
-        
+
         {/* Contact Form */}
-        <div className="contact-form-container">
-          <h2>Send Us a Message</h2>
-          <form className="contact-form" onSubmit={handleSubmit}>
-            <div className="form-group">
-              <label htmlFor="name">Your Name</label>
-              <input
-                type="text"
-                id="name"
-                name="name"
-                value={formData.name}
-                onChange={handleChange}
-                required
-              />
-            </div>
-            
-            <div className="form-group">
-              <label htmlFor="email">Your Email</label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                required
-              />
-            </div>
-            
-            <div className="form-group">
-              <label htmlFor="subject">Subject</label>
-              <input
-                type="text"
-                id="subject"
-                name="subject"
-                value={formData.subject}
-                onChange={handleChange}
-                required
-              />
-            </div>
-            
-            <div className="form-group">
-              <label htmlFor="message">Your Message</label>
-              <textarea
-                id="message"
-                name="message"
-                rows="5"
-                value={formData.message}
-                onChange={handleChange}
-                required
-              ></textarea>
-            </div>
-            
-            <button type="submit" className="submit-button">
-              Send Message
-            </button>
+        <div className="bg-white p-6 rounded-lg shadow-lg">
+          <h2 className="text-2xl font-semibold text-gray-700 mb-4">Send Us a Message</h2>
+          <form className="space-y-4" onSubmit={handleSubmit}>
+            <input type="text" name="name" placeholder="Your Name" value={formData.name} onChange={handleChange} className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-orange-500 outline-none" required />
+            <input type="email" name="email" placeholder="Your Email" value={formData.email} onChange={handleChange} className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-orange-500 outline-none" required />
+            <input type="text" name="subject" placeholder="Subject" value={formData.subject} onChange={handleChange} className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-orange-500 outline-none" required />
+            <textarea name="message" placeholder="Your Message" rows="5" value={formData.message} onChange={handleChange} className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-orange-500 outline-none" required></textarea>
+            <button type="submit" className="w-full bg-orange-500 text-white p-3 rounded-lg hover:bg-orange-600 transition-all">Send Message</button>
           </form>
         </div>
       </div>
       
       {/* Map Section */}
-      {/* Map Section */}
-<div className="map-section">
-  <h2>Find Us</h2>
-  <div className="map-container">
-    <div className="map-placeholder">
-     <img src="https://www.sammyfans.com/wp-content/uploads/2022/08/Google-Maps-Features-1.png" alt="Map location" style={{width: '100%', height: '100%', objectFit: 'cover'}} />
-    </div>
-  </div>
-</div>
+      <div className="text-center mt-10">
+        <h2 className="text-2xl font-semibold text-gray-700">Find Us</h2>
+        <div className="mt-4 w-full h-64 overflow-hidden rounded-lg shadow-lg">
+          <img src="https://www.sammyfans.com/wp-content/uploads/2022/08/Google-Maps-Features-1.png" alt="Map location" className="w-full h-full object-cover" />
+        </div>
+      </div>
       
       {/* FAQ Section */}
-      <div className="faq-section">
-        <h2>Frequently Asked Questions</h2>
-        <div className="faq-container">
-          <div className="faq-item">
-            <h3>How do I track my order?</h3>
+      <div className="mt-10">
+        <h2 className="text-2xl font-semibold text-gray-700 mb-6 text-center">Frequently Asked Questions</h2>
+        <div className="space-y-6">
+          <div className="p-4 bg-white shadow-md rounded-lg">
+            <h3 className="text-lg font-semibold">How do I track my order?</h3>
             <p>You can track your order in real-time through our app or website by clicking on "Track Order" in your order confirmation.</p>
           </div>
-          
-          <div className="faq-item">
-            <h3>What is your delivery radius?</h3>
+          <div className="p-4 bg-white shadow-md rounded-lg">
+            <h3 className="text-lg font-semibold">What is your delivery radius?</h3>
             <p>We currently deliver within a 10km radius from each restaurant partner. This may vary based on restaurant availability and location.</p>
           </div>
-          
-          <div className="faq-item">
-            <h3>How can restaurants partner with QuickBite?</h3>
+          <div className="p-4 bg-white shadow-md rounded-lg">
+            <h3 className="text-lg font-semibold">How can restaurants partner with QuickBite?</h3>
             <p>Restaurants can apply for partnership through our "Partner With Us" form or by emailing partners@quickbite.com.</p>
           </div>
-          
-          <div className="faq-item">
-            <h3>What payment methods do you accept?</h3>
+          <div className="p-4 bg-white shadow-md rounded-lg">
+            <h3 className="text-lg font-semibold">What payment methods do you accept?</h3>
             <p>We accept credit/debit cards, UPI, net banking, and cash on delivery for all orders.</p>
           </div>
         </div>
@@ -172,4 +102,3 @@ const Contact = () => {
 };
 
 export default Contact;
-

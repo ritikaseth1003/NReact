@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import OfflineGame from './OfflineGame'; // Assuming this is in the same folder
+import React, { useState, useEffect } from "react";
+import OfflineGame from "./OfflineGame";
 import RestaurantCard from "./RestaurantCard.js";
 import { Link } from "react-router-dom";
 import Shimmer from "./Shimmer.js";
@@ -10,29 +10,27 @@ const Body = () => {
   const [filteredRestaurants, setFilteredRestaurants] = useState([]);
   const [searchText, setSearchText] = useState("");
   const [nextPageUrl, setNextPageUrl] = useState(null);
-  const [isOffline, setIsOffline] = useState(!navigator.onLine); // State to track network status
-
-  // Effect to handle online/offline status changes
+  const [isOffline, setIsOffline] = useState(!navigator.onLine);
+console.log(listOfRestaurants);
   useEffect(() => {
     const handleOnline = () => setIsOffline(false);
     const handleOffline = () => setIsOffline(true);
 
-    window.addEventListener('online', handleOnline);
-    window.addEventListener('offline', handleOffline);
+    window.addEventListener("online", handleOnline);
+    window.addEventListener("offline", handleOffline);
 
-    // Clean up event listeners when the component is unmounted
     return () => {
-      window.removeEventListener('online', handleOnline);
-      window.removeEventListener('offline', handleOffline);
+      window.removeEventListener("online", handleOnline);
+      window.removeEventListener("offline", handleOffline);
     };
   }, []);
 
-  // Fetching data from API
   useEffect(() => {
     fetchData();
   }, []);
 
-  const apiUrl = "https://www.swiggy.com/dapi/restaurants/list/v5?lat=12.934370681186266&lng=77.53462551778405&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING";
+  const apiUrl =
+    "https://www.swiggy.com/dapi/restaurants/list/v5?lat=12.934370681186266&lng=77.53462551778405&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING";
 
   const fetchData = async () => {
     try {
@@ -44,8 +42,12 @@ const Body = () => {
         (card) => card?.card?.card?.gridElements?.infoWithStyle?.restaurants
       );
 
-      setListOfRestaurants(restaurantData?.card?.card?.gridElements?.infoWithStyle?.restaurants || []);
-      setFilteredRestaurants(restaurantData?.card?.card?.gridElements?.infoWithStyle?.restaurants || []);
+      setListOfRestaurants(
+        restaurantData?.card?.card?.gridElements?.infoWithStyle?.restaurants || []
+      );
+      setFilteredRestaurants(
+        restaurantData?.card?.card?.gridElements?.infoWithStyle?.restaurants || []
+      );
       setNextPageUrl(json?.data?.pageInfo?.nextPageUrl || null);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -63,71 +65,82 @@ const Body = () => {
         (card) => card?.card?.card?.gridElements?.infoWithStyle?.restaurants
       )?.card?.card?.gridElements?.infoWithStyle?.restaurants || [];
 
-      setListOfRestaurants((prevRestaurants) => [...prevRestaurants, ...newRestaurants]);
+      setListOfRestaurants((prev) => [...prev, ...newRestaurants]);
       setNextPageUrl(json?.data?.pageInfo?.nextPageUrl || null);
     } catch (error) {
       console.error("Error fetching more data:", error);
     }
   };
 
-  const onlineStatus = useOnlineStatus(); // Custom hook
-
   if (isOffline) {
-    return <OfflineGame />; // Show the game when offline
+    return <OfflineGame />;
   }
 
-  // Show Shimmer when data is loading
   if (listOfRestaurants.length === 0) {
     return <Shimmer />;
   }
 
   return (
-    <div className="body">
-      <div className="filter">
-        <div className="search">
+    <div className="container mx-auto p-6">
+      {/* Search & Filter Section */}
+      <div className="flex flex-col md:flex-row justify-between items-center gap-4 mb-6">
+        <div className="flex space-x-4 w-full md:w-auto">
           <input
             type="text"
-            className="search-box"
+            className="w-full md:w-64 p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-500 transition-all"
+            placeholder="Search Restaurants..."
             value={searchText}
-            onChange={(e) => {
-              setSearchText(e.target.value);
-            }}
+            onChange={(e) => setSearchText(e.target.value)}
           />
           <button
-            className="search-btn"
+            className="px-5 py-3 bg-orange-500 text-white font-semibold rounded-lg hover:bg-orange-600 active:bg-orange-700 shadow-md transition-transform transform hover:scale-105"
             onClick={() => {
-              const filteredRestaurants = listOfRestaurants.filter((res) =>
+              const filtered = listOfRestaurants.filter((res) =>
                 res.info.name.toLowerCase().includes(searchText.toLowerCase())
               );
-              setFilteredRestaurants(filteredRestaurants);
+              setFilteredRestaurants(filtered);
             }}
           >
-            Search
+            🔍 Search
           </button>
         </div>
+
         <button
-          className="filter-btn"
+          className="px-5 py-3 bg-green-500 text-white font-semibold rounded-lg hover:bg-green-600 active:bg-green-700 shadow-md transition-transform transform hover:scale-105"
           onClick={() => {
-            const filteredList = listOfRestaurants.filter((res) => res.info.avgRating > 4.5);
-            setFilteredRestaurants(filteredList); // Update filteredRestaurants instead
+            const filtered = listOfRestaurants.filter(
+              (res) => res.info.avgRating > 4.5
+            );
+            setFilteredRestaurants(filtered);
           }}
         >
-          Top Rated Restaurants
+          ⭐ Top Rated
         </button>
       </div>
 
-      <div className="res-container">
+      {/* Restaurant Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {filteredRestaurants.map((restaurant) => (
-          <Link key={restaurant.info.id} to={"/restaurants/" + restaurant.info.id}>
+          <Link
+            key={restaurant.info.id}
+            to={`/restaurants/${restaurant.info.id}`}
+            className="transform transition duration-300 hover:scale-105"
+          >
             <RestaurantCard resData={restaurant} />
           </Link>
         ))}
       </div>
 
+      {/* Load More Button */}
       {nextPageUrl && (
-        <button className="load-more-btn" onClick={fetchMoreData}>
-          Load More Restaurants
-        </button>
+        <div className="flex justify-center mt-8">
+          <button
+            className="px-6 py-3 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 active:bg-blue-700 shadow-md transition-transform transform hover:scale-105"
+            onClick={fetchMoreData}
+          >
+            🔄 Load More Restaurants
+          </button>
+        </div>
       )}
     </div>
   );

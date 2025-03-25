@@ -7,6 +7,9 @@ import Body from "./components/Body.js";
 import Footer from "./components/Footer.js";
 import { createBrowserRouter} from "react-router-dom";
 
+// In your index.js or App.js
+import './index.css';
+ // or whatever your CSS file is named
 
 // import About from "./components/About.js"
 import Contact from "./components/Contact.js";
