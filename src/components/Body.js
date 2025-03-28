@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import OfflineGame from "./OfflineGame";
-import RestaurantCard from "./RestaurantCard.js";
+import RestaurantCard, { withAggDiscount } from "./RestaurantCard.js";
 import { Link } from "react-router-dom";
 import Shimmer from "./Shimmer.js";
 import useOnlineStatus from "../utils/useOnlineStatus.js";
+
+const RestaurantCardWithAggDiscount = withAggDiscount(RestaurantCard);
 
 const Body = () => {
   const [listOfRestaurants, setListOfRestaurants] = useState([]);
@@ -11,7 +13,9 @@ const Body = () => {
   const [searchText, setSearchText] = useState("");
   const [nextPageUrl, setNextPageUrl] = useState(null);
   const [isOffline, setIsOffline] = useState(!navigator.onLine);
-console.log(listOfRestaurants);
+
+  console.log(listOfRestaurants);
+
   useEffect(() => {
     const handleOnline = () => setIsOffline(false);
     const handleOffline = () => setIsOffline(true);
@@ -126,7 +130,12 @@ console.log(listOfRestaurants);
             to={`/restaurants/${restaurant.info.id}`}
             className="transform transition duration-300 hover:scale-105"
           >
-            <RestaurantCard resData={restaurant} />
+            {/* IF THE RESTAURANT HAS AN AGGREGATED DISCOUNT, SHOW IT IN THE CARD */}
+            {restaurant.info.aggregatedDiscountInfoV3 ? (
+              <RestaurantCardWithAggDiscount resData={restaurant} />
+            ) : (
+              <RestaurantCard resData={restaurant} />
+            )}
           </Link>
         ))}
       </div>

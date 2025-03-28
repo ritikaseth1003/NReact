@@ -11,7 +11,7 @@ class UserClass extends React.Component {
             },
         };
     }
-
+//ok
 async componentDidMount() {  
     console.log("Fetching data...");
 

@@ -1,22 +1,20 @@
-import { useEffect,useState} from "react";
-import { MENU_API, PROXYURL } from "../utils/constants";
-const useRestaurantMenu=(resId)=>{
-    const [resInfo,setResInfo]=useState(null);
-    //fetch data
-    useEffect(()=>{
-        fetchData();
-    },[]);
-const fetchData = async () => {
-    try {
-        const response = await fetch(`${PROXYURL}${encodeURIComponent(`${MENU_API}=${resId}`)}`);
-        const json = await response.json();
-        setResInfo(json.data);
-    } catch (error) {
-        console.error("Error fetching menu data:", error);
-    }
+import { useEffect, useState } from "react";
+import { MENU_API } from "../utils/constants";
+
+const useRestaurantMenu = (resId) => {
+  const [resInfo, setResInfo] = useState(null);
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchData = async () => {
+    const data = await fetch(MENU_API + resId);
+    const json = await data.json();
+    setResInfo(json.data);
+  };
+
+  return resInfo;
 };
 
-
-    return resInfo;
-}
 export default useRestaurantMenu;
