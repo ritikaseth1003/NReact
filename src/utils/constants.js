@@ -4,6 +4,4 @@ export const LOGO_URL="https://i.pinimg.com/originals/01/48/66/0148662247327a7d2
 //This is how u can export multiple things from a file using named export and import.
 export const PROXYURL="https://thingproxy.freeboard.io/fetch/";
 export const MENU_API = `${PROXYURL}https://www.swiggy.com/dapi/menu/pl?page-type=REGULAR_MENU&complete-menu=true&lat=12.934370681186266&lng=77.53462551778405&restaurantId=`;
-
-
-
+export const CDN="https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_300,h_300,c_fit/";
