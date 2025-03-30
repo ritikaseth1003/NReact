@@ -2,10 +2,12 @@ import { useParams } from "react-router-dom";
 import Shimmer from "./Shimmer";
 import useRestaurantMenu from "../utils/useRestaurantMenu";
 import RestaurantCategory from "./RestaurantCategory";
+import {useState} from "react";
 const RestaurantMenu = () => {
     const { resId } = useParams();
     const resInfo = useRestaurantMenu(resId);
 
+    const [showIndex, setShowIndex] = useState(-1); // State to manage which category is expanded
     // Debugging API response
     console.log("API Response:", resInfo);
 
@@ -18,13 +20,14 @@ const RestaurantMenu = () => {
     const { name = "Unknown Restaurant", cuisines = [], costForTwoMessage = "N/A" } = menuInfo;
 
     // Extract categories
+
     const categories = resInfo.cards
         .filter(card => card?.groupedCard?.cardGroupMap?.REGULAR?.cards)
         .flatMap(card => card.groupedCard.cardGroupMap.REGULAR.cards)
         .filter(item => item.card?.card?.["@type"] === "type.googleapis.com/swiggy.presentation.food.v2.ItemCategory")
         .map(item => ({
             title: item.card.card.title,
-            categoryId: item.card.card.categoryId, // Ensure categoryId exists
+            categoryId: item.card.card.categoryId || item.card.card.title, // Ensure a unique key
             itemCards: item.card.card.itemCards || [] // Store items within category
         }));
 
@@ -34,30 +37,18 @@ const RestaurantMenu = () => {
         <div className="flex flex-col flex-wrap items-center text-center justify-center">
             <h1 className="text-3xl text-blue-800 my-5 mx-2 text-2xl p-3 font-bold">{name}</h1>
             <p className="mx-2 text-xl font-bold text-lg">{cuisines?.join(", ") || "No cuisines available"} - {costForTwoMessage}</p>
-        {/* categories accordian-header and collapsable body. */}
-        {categories.map((category)=>(
-    <RestaurantCategory key={category?.name} data={category} />
-    
-))}
+        
+            {/* Categories Accordion Header and Collapsible Body */}
+            {categories.map((category,index) => (
+                //controlled component.
+                <RestaurantCategory key={category.categoryId} data={category}
+                showItems={index==showIndex ? true:false}  // Pass showItems as false to avoid initial rendering of items
+                setShowIndex={()=>{
+                    setShowIndex(index); // Update the index of the currently expanded category
 
-            {/* <ul>
-                {categories.map((category) => (
-                    <li key={category.categoryId} className="my-5 mx-2">
-                        <h2 className="text-2xl flex items-center justify-center font-extrabold text-blue-800">{category.title} - ({category.itemCards.length} items)</h2>
-                        <ul>
-                            {
-                                category.itemCards.map((item) => (
-                            
-                                    <li key={item.card.info.id} className="my-2 mx-2 flex flex-col border-2 border-blue-200 rounded-lg p-4 shadow-md">
-                                        <h3 className="text-xl text-blue-600">{item.card.info.name} - Rs. {item.card.info.defaultPrice ? item.card.info.defaultPrice / 100 : "N/A"}</h3>
-                                        <p className="font-bold">{item.card.info.description || "No description available"}</p>
-                                    </li>
-                                ))
-                            }
-                        </ul>
-                    </li>
-                ))}
-            </ul> */}
+                }}
+                />
+            ))}
         </div>
     );
 };
